@@ -1,0 +1,11 @@
+@import "tailwindcss";
+/* src/App.css */
+
+@import "@fontsource/comic-mono/700.css"; 
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; 
+}
+.myfont{
+    font-family: 'LXGW WenKai Mono TC', monospace;
+}
