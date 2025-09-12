@@ -31,7 +31,7 @@ function App() {
         {/* About */}
         <section
           id="about"
-          className="py-16 md:h-screen w-full flex items-center justify-center bg-red-100 px-4 bg-cover bg-center bg-[url('purple.jpg')] select-none  overflow-y-auto"
+          className="py-16 md:h-screen w-full flex items-center justify-center  px-4 bg-cover bg-center bg-[url('/purple.jpg')] select-none  overflow-y-auto"
         >
           <About />
         </section>
@@ -47,7 +47,7 @@ function App() {
         {/* Projects */}
         <section
           id="projects"
-          className="py-16 md:h-screen w-full flex items-baseline justify-center  px-4 bg-cover bg-center bg-[url('purple.jpg')] select-none"
+          className="py-16 md:h-screen w-full flex items-baseline justify-center  px-4 bg-cover bg-center bg-[url('/purple.jpg')] select-none"
         >
           <Projects />
         </section>
