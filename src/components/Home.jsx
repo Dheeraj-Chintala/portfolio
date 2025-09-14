@@ -61,7 +61,14 @@ export default function Home() {
         >
           View My Work
         </button>
-        <button className="cursor-pointer border border-blue-500 text-white font-bold py-3 px-8 rounded shadow-lg hover:bg-blue-600 transition-colors duration-300">
+        <button 
+     onClick={() => {
+    const link = document.createElement("a");
+    link.href = "/DheerajResume.pdf";
+    link.download = "DheerajResume.pdf"; 
+    link.click();
+  }}
+          className="cursor-pointer border border-blue-500 text-white font-bold py-3 px-8 rounded shadow-lg hover:bg-blue-600 transition-colors duration-300">
           Download CV
         </button>
       </div>
