@@ -10,7 +10,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 40 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="myfont text-3xl sm:text-6xl md:text-7xl lg:text-8xl text-gray-400 font-bold"
+        className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl text-gray-400 font-bold"
       >
         Hi, I'm DHEERAJ
       </motion.h1>
