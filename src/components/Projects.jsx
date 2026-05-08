@@ -6,15 +6,14 @@ export default function Projects() {
   return (
     <div className="w-full md:w-[80%] mx-auto px-4 py-10 flex flex-col items-center">
       <h1 className="text-2xl md:text-3xl font-bold">Featured Projects</h1>
-      <h2 className="text-gray-400 text-base md:text-lg mb-8 text-center">
+      <h2 className="text-gray text-base md:text-lg mb-8 text-center">
         Showcasing innovative solutions that push the boundaries of technology
       </h2>
 
-      {/* Wrapper */}
       <div
         className="
-          flex flex-col gap-6 w-full
-          md:flex-row md:overflow-x-scroll md:gap-8 md:pb-4  no-scrollbar 
+          flex flex-col gap-6 w-full pt-4
+          md:flex-row md:overflow-x-scroll md:gap-8 md:pb-4 md:pt-10 no-scrollbar 
         "
       > 
         <ProjectCard
@@ -77,7 +76,7 @@ export default function Projects() {
             },
           ]}
         />
-         <div className="h-20 md:h-auto flex-shrink-0 flex items-center justify-center">
+         <div className="h-20 md:h-auto flex-shrink-0 flex items-center justify-center px-10">
         <GlowingButton
           label="View More"
           onClick={() => window.open("https://github.com/Dheeraj-Chintala", "_blank")}

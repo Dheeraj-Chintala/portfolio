@@ -9,10 +9,10 @@ function AnimatedProgress({ title, value }) {
     <div ref={ref}>
       {/* Title and Percentage */}
       <div className="mb-2 flex justify-between items-center">
-        <h3 className="text-sm font-semibold text-gray-800 dark:text-white">
+        <h3 className="text-sm font-semibold text-gray dark:text-gray">
           {title}
         </h3>
-        <span className="text-sm text-gray-800 dark:text-white">
+        <span className="text-sm text-gray dark:text-gray">
           {value}%
         </span>
       </div>
@@ -39,13 +39,13 @@ function AnimatedProgress({ title, value }) {
 export default function Progress() {
   const skills = [
     { title: "Frontend (React, Tailwind)", value: 80 },
-    { title: "Backend (Node.js, Supabase)", value: 70 },
+    { title: "Backend (NodeJS, Supabase)", value: 70 },
     { title: "Android (Flutter, Firebase)", value: 75 },
     { title: "Data Structures & Algorithms", value: 65 },
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 ">
       {skills.map((skill, idx) => (
         <AnimatedProgress key={idx} title={skill.title} value={skill.value} />
       ))}
