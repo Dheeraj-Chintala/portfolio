@@ -52,7 +52,8 @@ function AppContent() {
         {/* Skills */}
         <section
           id="skills"
-          className="py-16 md:h-screen w-full flex items-center justify-center px-4 select-none overflow-y-auto"
+          className="py-16 md:h-screen w-full flex items-center justify-center px-4 select-none overflow-y-auto transition-colors duration-500"
+          style={{ background: "var(--gradient-section-about)" }}
         >
           <Skills />
         </section>

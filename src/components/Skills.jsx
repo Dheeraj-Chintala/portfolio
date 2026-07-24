@@ -1,86 +1,32 @@
-import {
-  FaJs, FaReact, FaHtml5, FaPython, FaGitAlt, FaGithub,
-} from "react-icons/fa";
-import { RiTailwindCssFill, RiSupabaseFill } from "react-icons/ri";
-import { FaFlutter } from "react-icons/fa6";
-import { IoLogoFirebase } from "react-icons/io5";
-import { SiPostgresql } from "react-icons/si";
-import { VscVscode } from "react-icons/vsc";
-import SkillCard from "./SkillCard";
-import { SequentialFadeIn } from "./SequentialFadeIn";
+import Physics from "./Physics";
 
 export default function Skills() {
   return (
-    <div className="rounded-xl w-full md:w-5/6 lg:w-3/4 mx-auto px-4 py-12 grid gap-10 md:grid-cols-2">
-      {/* Left Column */}
-      <div className="flex flex-col gap-10 text-center md:text-left">
-        <div>
-          <h1 className="text-2xl md:text-4xl font-bold mb-2 transition-colors duration-300" style={{ color: "var(--color-text-primary)" }}>
+    <div className="w-full h-full flex items-center justify-center py-12 px-4 min-h-[70vh]">
+      {/* Physics Gravity Gallery Box */}
+      <div className="w-full md:w-4/5 lg:w-3/4 h-[500px] md:h-[600px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)] relative z-20 pointer-events-auto bg-transparent backdrop-blur-xl">
+        
+        {/* Absolute Text overlay inside the box */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-0 pointer-events-none p-6">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 transition-colors duration-300 uppercase tracking-wider" style={{ color: "var(--color-text-primary)" }}>
             Tech Stack
           </h1>
-          <h2 className="text-base md:text-lg transition-colors duration-300" style={{ color: "var(--color-text-body)" }}>
-            Mastering the latest technologies to build tomorrow&apos;s digital solutions
+          <h2 className="text-lg md:text-xl transition-colors duration-300 max-w-2xl mx-auto" style={{ color: "var(--color-text-body)" }}>
+            Mastering the latest technologies to build tomorrow&apos;s digital solutions.
           </h2>
+          <p className="mt-4 text-sm opacity-60 transition-colors duration-300 font-mono" style={{ color: "var(--color-text-body)" }}>
+            (Drag and throw to interact)
+          </p>
         </div>
 
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold mb-4 relative inline-block 
-             after:content-[''] after:block after:w-12 after:h-[2px] after:mt-1 
-             after:bg-slate-300 transition-colors duration-300"
-            style={{ color: "var(--color-text-primary)" }}>
-            Frontend
-          </h2>
-          <SequentialFadeIn className="flex flex-wrap justify-center md:justify-start gap-5">
-            <SkillCard icon={<FaReact className="text-sky-400" />} label="React JS" />
-            <SkillCard icon={<RiTailwindCssFill className="text-cyan-400" />} label="Tailwind" />
-            <SkillCard icon={<FaHtml5 className="text-orange-500" />} label="HTML5" />
-            <SkillCard icon={<FaJs className="text-yellow-400" />} label="JavaScript" />
-          </SequentialFadeIn>
-        </div>
-      </div>
-
-      {/* Right Column */}
-      <div className="flex flex-col gap-10 text-center md:text-left">
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold mb-4 relative inline-block 
-             after:content-[''] after:block after:w-12 after:h-[2px] after:mt-1 
-             after:bg-slate-300 transition-colors duration-300"
-            style={{ color: "var(--color-text-primary)" }}>
-            Android App development
-          </h2>
-          <SequentialFadeIn className="flex flex-wrap justify-center md:justify-start gap-5">
-            <SkillCard icon={<FaFlutter className="text-sky-500" />} label="Flutter" />
-            <SkillCard icon={<img src="riverpod.png" alt="Riverpod" className="h-10" />} label="Riverpod" />
-            <SkillCard icon={<SiPostgresql className="text-indigo-400" />} label="PostgresSQL" />
-          </SequentialFadeIn>
-        </div>
-
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold mb-4 relative inline-block 
-             after:content-[''] after:block after:w-12 after:h-[2px] after:mt-1 
-             after:bg-slate-300 transition-colors duration-300"
-            style={{ color: "var(--color-text-primary)" }}>
-            Backend
-          </h2>
-          <SequentialFadeIn className="flex flex-wrap justify-center md:justify-start gap-5">
-            <SkillCard icon={<IoLogoFirebase className="text-yellow-500" />} label="Firebase" />
-            <SkillCard icon={<RiSupabaseFill className="text-green-500" />} label="Supabase" />
-            <SkillCard icon={<FaPython className="text-blue-500" />} label="Python" />
-          </SequentialFadeIn>
-        </div>
-
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold mb-4 relative inline-block 
-             after:content-[''] after:block after:w-12 after:h-[2px] after:mt-1 
-             after:bg-slate-300 transition-colors duration-300"
-            style={{ color: "var(--color-text-primary)" }}>
-            Tools &amp; Platforms
-          </h2>
-          <SequentialFadeIn className="flex flex-wrap justify-center md:justify-start gap-5">
-            <SkillCard icon={<VscVscode className="text-blue-400" />} label="VS Code" />
-            <SkillCard icon={<FaGitAlt className="text-red-500" />} label="Git" />
-            <SkillCard icon={<FaGithub style={{ color: "var(--color-text-github-icon)" }} />} label="GitHub" />
-          </SequentialFadeIn>
+        {/* Physics engine */}
+        <div className="absolute inset-0 z-10">
+          <Physics 
+            size={120} 
+            shape="circle" 
+            friction={2}
+            color="#1e293b"
+          />
         </div>
       </div>
     </div>

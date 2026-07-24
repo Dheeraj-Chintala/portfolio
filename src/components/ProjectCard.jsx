@@ -48,7 +48,7 @@ export default function ProjectCard({
 
   return (
     <motion.div
-      className="project-card relative flex flex-col backdrop-blur-xl p-6 rounded-2xl md:w-96 h-[34rem]"
+      className="project-card shrink-0 relative flex flex-col backdrop-blur-xl p-6 rounded-2xl w-[85vw] sm:w-[320px] md:w-[340px] h-[34rem] shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
       style={cardStyle}
       initial="hidden"
       whileInView="visible"
@@ -98,7 +98,7 @@ export default function ProjectCard({
             <button
               key={index}
               onClick={btn.onClick}
-              className="whitespace-nowrap px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer"
+              className="flex-1 whitespace-nowrap px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-md cursor-pointer"
               style={btn.type === "primary" ? primaryBtnStyle : secondaryBtnStyle}
               onMouseEnter={(e) => {
                 if (btn.type === "primary") {

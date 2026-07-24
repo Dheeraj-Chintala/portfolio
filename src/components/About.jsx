@@ -16,11 +16,10 @@ export default function About() {
       viewport={{ once: true }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       whileHover={{ y: -8, scale: 1.01, transition: { duration: 0.2 } }}
-      className="rounded-2xl w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-8 px-6 py-10 items-center backdrop-blur-md"
+      className="rounded-3xl w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-8 px-8 py-10 items-center backdrop-blur-xl shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
       style={{
         border: "1px solid var(--color-border-glass)",
         background: "var(--color-bg-surface)",
-        boxShadow: "var(--color-shadow-card)",
       }}
     >
       {/* About Me */}

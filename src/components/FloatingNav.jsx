@@ -21,7 +21,6 @@ export default function FloatingNav() {
   const navStyle = {
     border: "1px solid var(--color-border-glass-nav)",
     background: "var(--color-bg-surface-solid)",
-    boxShadow: "var(--color-shadow-nav)",
   };
 
   const linkClass = "flex items-center gap-2 transition-colors duration-200 hover:opacity-80";
@@ -31,7 +30,7 @@ export default function FloatingNav() {
       <div
         className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50
                     justify-between items-center
-                    backdrop-blur-xl rounded-full px-6 py-3 gap-6 transition-all duration-300"
+                    backdrop-blur-xl rounded-full px-6 py-3 gap-6 transition-all duration-300 shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
         style={navStyle}
       >
         {desktopLinks.map(({ href, Icon, label }) => (
@@ -48,7 +47,7 @@ export default function FloatingNav() {
       <div
         className="flex md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[1000]
                     justify-between items-center
-                    backdrop-blur-md rounded-full px-6 py-3 gap-6 transition-all duration-300"
+                    backdrop-blur-md rounded-full px-6 py-3 gap-6 transition-all duration-300 shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
         style={navStyle}
       >
         {mobileLinks.map(({ href, Icon }) => (

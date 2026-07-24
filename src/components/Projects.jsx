@@ -13,7 +13,7 @@ export default function Projects() {
       <div
         className="
           flex flex-col gap-6 w-full pt-4
-          md:flex-row md:overflow-x-scroll md:gap-8 md:pb-4 md:pt-10 no-scrollbar 
+          md:flex-row md:overflow-x-scroll md:gap-8 md:py-16 md:px-16 no-scrollbar 
         "
       > 
         <ProjectCard
@@ -76,13 +76,14 @@ export default function Projects() {
             },
           ]}
         />
-         <div className="h-20 md:h-auto flex-shrink-0 flex items-center justify-center px-10">
-        <GlowingButton
-          label="View More"
-          onClick={() => window.open("https://github.com/Dheeraj-Chintala", "_blank")}
-        />
-      </div>
-       
+        <div className="h-20 md:h-auto flex-shrink-0 flex items-center justify-center px-10">
+          <GlowingButton
+            label="View More"
+            onClick={() => window.open("https://github.com/Dheeraj-Chintala", "_blank")}
+          />
+        </div>
+        {/* Spacer to fix scroll padding clip on right side */}
+        <div className="w-4 md:w-8 shrink-0" />
       </div>
     </div>
   );
