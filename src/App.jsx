@@ -1,30 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import FloatingNav from "./components/FloatingNav";
-import ThemeToggle from "./components/ThemeToggle";
 import Home from "./components/Home";
 import BubblesBackground from "./components/BubblesBackground";
 import About from "./components/About";
 import Skills from "./components/Skills";
+import Experience from "./components/Experience";
 import Projects from "./components/Projects";
-import SocialLinks from "./components/SocialLinks";
+import Contact from "./components/Contact";
+import LoadingScreen from "./components/LoadingScreen";
 
 function AppContent() {
-  const { isDark } = useTheme();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
     <div
       className="relative min-h-screen overflow-hidden transition-colors duration-500"
       style={{ color: "var(--color-text-primary)" }}
     >
-      {/* Background */}
-      <div className="absolute inset-0 -z-10">
+      {/* Minimal Designed Loading Screen with Numbers Counter */}
+      <LoadingScreen onComplete={() => setIsLoaded(true)} />
+
+      {/* Background (desktop only to prevent mobile scroll lag & battery drain) */}
+      <div className="hidden md:block absolute inset-0 -z-10">
         <BubblesBackground />
       </div>
-
-      {/* Theme Toggle */}
-      <ThemeToggle />
 
       {/* Floating Nav */}
       <FloatingNav />
@@ -34,16 +35,15 @@ function AppContent() {
         {/* Home */}
         <section
           id="home"
-          className="min-h-screen md:h-screen w-full flex items-center justify-center px-4 select-none transition-colors duration-500"
-          style={{ backgroundColor: "var(--color-bg-home-overlay)" }}
+          className="relative min-h-screen md:h-screen w-full flex items-center justify-center select-none overflow-hidden transition-colors duration-500"
         >
-          <Home />
+          <Home isLoaded={isLoaded} />
         </section>
 
         {/* About */}
         <section
           id="about"
-          className="py-16 md:h-screen w-full flex items-center justify-center px-4 select-none overflow-y-auto transition-colors duration-500"
+          className="py-24 min-h-screen w-full flex items-center justify-center px-4 select-none transition-colors duration-500"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <About />
@@ -52,16 +52,25 @@ function AppContent() {
         {/* Skills */}
         <section
           id="skills"
-          className="py-16 md:h-screen w-full flex items-center justify-center px-4 select-none overflow-y-auto transition-colors duration-500"
+          className="py-20 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <Skills />
         </section>
 
+        {/* Experience & Work */}
+        <section
+          id="experience"
+          className="py-16 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
+          style={{ background: "var(--gradient-section-about)" }}
+        >
+          <Experience />
+        </section>
+
         {/* Projects */}
         <section
           id="projects"
-          className="py-16 md:h-screen w-full flex items-baseline justify-center px-4 select-none transition-colors duration-500"
+          className="py-20 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-projects)" }}
         >
           <Projects />
@@ -70,10 +79,10 @@ function AppContent() {
         {/* Contact */}
         <section
           id="contact"
-          className="w-full flex items-center justify-center select-none transition-colors duration-500"
-          style={{ background: "var(--color-bg-footer)" }}
+          className="w-full flex items-center justify-center select-none transition-colors duration-500 overflow-hidden"
+          style={{ background: "var(--gradient-section-about)" }}
         >
-          <SocialLinks />
+          <Contact />
         </section>
       </div>
     </div>

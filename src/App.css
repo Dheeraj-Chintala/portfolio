@@ -1,7 +1,6 @@
 @import "tailwindcss";
+@source "./components/originkit";
 /* src/App.css */
-
-@import "@fontsource/comic-mono/700.css"; 
 
 .no-scrollbar::-webkit-scrollbar {
   display: none; 

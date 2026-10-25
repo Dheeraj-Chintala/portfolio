@@ -1,13 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(false);
-  const toggleTheme = () => setIsDark((prev) => !prev);
+  const isDark = false;
+  const toggleTheme = () => {};
 
   if (typeof document !== "undefined") {
-    document.documentElement.dataset.theme = isDark ? "dark" : "light";
+    document.documentElement.dataset.theme = "light";
   }
 
   return (

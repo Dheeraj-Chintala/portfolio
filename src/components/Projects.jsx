@@ -1,90 +1,76 @@
+import { motion } from "framer-motion";
+import ChromaGrid from "./ChromaGrid";
 import GlowingButton from "./GlowingButton";
-import ProjectCard from "./ProjectCard";
-import { FaGithub} from "react-icons/fa";
+
+const PROJECTS_DATA = [
+  {
+    image: "/pr1.png",
+    title: "Quick 3D",
+    subtitle: "2D to 3D STL Converter • React & Python",
+    accent: "#0284c7",
+    url: "https://quick3d.vercel.app/",
+  },
+  {
+    image: "/pr2.png",
+    title: "Flutter Text Utils",
+    subtitle: "Open Source Pub Package • Dart Toolkit",
+    accent: "#10b981",
+    url: "https://pub.dev/packages/flutter_text_utils",
+  },
+  {
+    image: "/pr3.png",
+    title: "Savour-AI",
+    subtitle: "AI Food Discovery & Reels UI • Flutter",
+    accent: "#f97316",
+    url: "https://github.com/Dheeraj-Chintala/Savour-AI",
+  }
+];
 
 export default function Projects() {
   return (
-    <div className="w-full md:w-[80%] mx-auto px-4 py-10 flex flex-col items-center">
-      <h1 className="text-2xl md:text-3xl font-bold">Featured Projects</h1>
-      <h2 className="text-gray text-base md:text-lg mb-8 text-center">
-        Showcasing innovative solutions that push the boundaries of technology
-      </h2>
-
-      <div
-        className="
-          flex flex-col gap-6 w-full pt-4
-          md:flex-row md:overflow-x-scroll md:gap-8 md:py-16 md:px-16 no-scrollbar 
-        "
-      > 
-        <ProjectCard
-          imageSrc="pr1.png"
-          title="Quick 3D"
-          description="Powerful React-based web application that enables users to effortlessly convert 2D images into 3D STL models. With its intuitive interface and real-time processing, Quick 3D bridges the gap between simple 2D artwork and fully functional 3D objects"
-          pills={["ReactJS", "Python", "3D Modeling","Website"]}
-          buttons={[
-            {
-              label: "Live Demo",
-              type: "primary",
-              icon: "",
-              onClick: () => window.open("https://quick3d.vercel.app/", "_blank"),
-            },
-            {
-              label: "Code",
-              type: "secondary",
-              icon: <FaGithub  />,
-              onClick: () => window.open("https://github.com/Dheeraj-Chintala/Quick-3D", "_blank"),
-            },
-          ]}
-        />
-        <ProjectCard
-          imageSrc="pr2.png"
-          title="Flutter_text_utils"
-          description="An efficient and powerful toolkit for string manipulation, text analysis and form validation."
-          pills={["flutter-package", "dart", "toolkit","text-analysis","text-validation"]}
-          buttons={[
-            {
-              label: "Explore Package",
-              type: "primary",
-              icon: "",
-              onClick: () => window.open("https://pub.dev/packages/flutter_text_utils", "_blank"),
-            },
-            {
-              label: "Code",
-              type: "secondary",
-              icon: <FaGithub  />,
-              onClick: () => window.open("https://github.com/Dheeraj-Chintala/flutter-text-utils", "_blank"),
-            },
-          ]}
-        />
-        <ProjectCard
-          imageSrc="pr3.png"
-          title="Savour-AI"
-          description="A cross-platform Flutter food discovery app with personalized AI, reels-style swipe UI, dynamic colors, and YouTube recipe tutorials."
-          pills={["Flutter", "Dart", "AI","Food-Discovery","Mobile-App"]}
-          buttons={[
-            {
-              label: "Download App",
-              type: "primary",
-              icon: "",
-              onClick: () => window.open("https://github.com/Dheeraj-Chintala/Savour-AI/releases/tag/v1.0.0", "_blank"),
-            },
-            {
-              label: "Code",
-              type: "secondary",
-              icon: <FaGithub  />,
-              onClick: () => window.open("https://github.com/Dheeraj-Chintala/Savour-AI", "_blank"),
-            },
-          ]}
-        />
-        <div className="h-20 md:h-auto flex-shrink-0 flex items-center justify-center px-10">
-          <GlowingButton
-            label="View More"
-            onClick={() => window.open("https://github.com/Dheeraj-Chintala", "_blank")}
-          />
-        </div>
-        {/* Spacer to fix scroll padding clip on right side */}
-        <div className="w-4 md:w-8 shrink-0" />
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 flex flex-col items-start justify-center relative">
+      {/* Featured Projects Heading - Tucked Under Div */}
+      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 select-none pt-2 relative z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 0.6, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-slate-900 leading-tight inline-block origin-bottom-left pt-1"
+          style={{
+            fontFamily: "'Boldonse', system-ui, sans-serif",
+            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
+            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
+          }}
+        >
+          Featured Projects
+        </motion.h2>
       </div>
+
+      {/* React Bits ChromaGrid Interactive Spotlight Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full relative z-20"
+      >
+        <ChromaGrid items={PROJECTS_DATA} className="w-full" />
+      </motion.div>
+
+      {/* GitHub CTA Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="w-full flex justify-center mt-12"
+      >
+        <GlowingButton
+          label="View More on GitHub"
+          onClick={() => window.open("https://github.com/Dheeraj-Chintala", "_blank")}
+        />
+      </motion.div>
     </div>
   );
 }

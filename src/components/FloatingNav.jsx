@@ -1,10 +1,11 @@
 import { createElement } from "react";
-import { Home, User, Briefcase, FileText, Mail } from "lucide-react";
+import { Home, User, Code2, Briefcase, FileText, Mail } from "lucide-react";
 
 const desktopLinks = [
   { href: "#home", Icon: Home, label: "Home" },
   { href: "#about", Icon: User, label: "About" },
-  { href: "#skills", Icon: Briefcase, label: "Skills" },
+  { href: "#skills", Icon: Code2, label: "Skills" },
+  { href: "#experience", Icon: Briefcase, label: "Experience" },
   { href: "#projects", Icon: FileText, label: "Projects" },
   { href: "#contact", Icon: Mail, label: "Contact" },
 ];
@@ -12,53 +13,64 @@ const desktopLinks = [
 const mobileLinks = [
   { href: "#home", Icon: Home },
   { href: "#about", Icon: User },
-  { href: "#skills", Icon: Briefcase },
+  { href: "#skills", Icon: Code2 },
+  { href: "#experience", Icon: Briefcase },
   { href: "#projects", Icon: FileText },
   { href: "#contact", Icon: Mail },
 ];
 
 export default function FloatingNav() {
-  const navStyle = {
-    border: "1px solid var(--color-border-glass-nav)",
-    background: "var(--color-bg-surface-solid)",
+  const glassStyle = {
+    background: "rgba(255, 255, 255, 0.45)",
+    border: "1px solid rgba(255, 255, 255, 0.8)",
+    boxShadow:
+      "0 20px 40px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(15, 23, 42, 0.04)",
   };
-
-  const linkClass = "flex items-center gap-2 transition-colors duration-200 hover:opacity-80";
 
   return (
     <>
-      <div
-        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50
+      {/* Desktop Glass Navbar */}
+      <nav
+        className="hidden md:flex fixed top-4 right-6 md:right-8 z-50
                     justify-between items-center
-                    backdrop-blur-xl rounded-full px-6 py-3 gap-6 transition-all duration-300 shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
-        style={navStyle}
+                    backdrop-blur-2xl rounded-full px-3 py-2 gap-2 transition-all duration-300"
+        style={glassStyle}
       >
         {desktopLinks.map(({ href, Icon, label }) => (
-          <a key={href} href={href} className={linkClass} style={{ color: "var(--color-text-secondary)" }}>
+          <a
+            key={href}
+            href={href}
+            className="group flex items-center gap-2 px-3 py-1.5 rounded-full text-slate-700 transition-all duration-200 hover:bg-white/70 hover:text-slate-950 hover:shadow-sm"
+          >
             {createElement(Icon, {
-              size: 20,
-              className: "transition-transform duration-150 hover:scale-125",
+              size: 17,
+              className: "transition-transform duration-200 group-hover:scale-115 text-slate-600 group-hover:text-sky-600",
             })}
-            <span style={{ color: "var(--color-text-heading)" }}>{label}</span>
+            <span className="text-xs font-semibold tracking-wide">{label}</span>
           </a>
         ))}
-      </div>
+      </nav>
 
-      <div
+      {/* Mobile Glass Navbar */}
+      <nav
         className="flex md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[1000]
-                    justify-between items-center
-                    backdrop-blur-md rounded-full px-6 py-3 gap-6 transition-all duration-300 shadow-[0_20px_50px_rgba(15,23,42,0.1),inset_0_2px_20px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_2px_20px_rgba(255,255,255,0.02)]"
-        style={navStyle}
+                    justify-between items-center max-w-[92vw]
+                    backdrop-blur-2xl rounded-full px-4 py-2 gap-3 sm:px-5 sm:py-2.5 sm:gap-5 transition-all duration-300 shadow-xl"
+        style={glassStyle}
       >
         {mobileLinks.map(({ href, Icon }) => (
-          <a key={href} href={href} style={{ color: "var(--color-text-secondary)" }}>
+          <a
+            key={href}
+            href={href}
+            className="p-2 rounded-full text-slate-700 transition-all duration-200 hover:bg-white/70 active:scale-95"
+          >
             {createElement(Icon, {
-              size: 24,
-              className: "transition-transform duration-150 hover:scale-125",
+              size: 20,
+              className: "transition-transform duration-150 hover:scale-115 text-slate-700",
             })}
           </a>
         ))}
-      </div>
+      </nav>
     </>
   );
 }
