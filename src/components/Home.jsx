@@ -37,7 +37,7 @@ export default function Home({ isLoaded = true }) {
             glow: "rgba(255, 245, 210, 0.9)",
           }}
           pointer={{
-            parallax: 125,
+            parallax: 300,
             wind: 95,
             damping: 24,
           }}
@@ -58,10 +58,10 @@ export default function Home({ isLoaded = true }) {
         animate={
           isLoaded
             ? {
-                opacity: 1,
-                scale: 1,
-                y: [-4, 4, -4],
-              }
+              opacity: 1,
+              scale: 1,
+              y: [-4, 4, -4],
+            }
             : { opacity: 0, scale: 0.8, y: -8 }
         }
         whileTap={{
