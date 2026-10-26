@@ -4,26 +4,61 @@ import GlowingButton from "./GlowingButton";
 
 const PROJECTS_DATA = [
   {
-    image: "/pr1.png",
+    image: "/projects/dailyex.jpg",
+    title: "Daily Express",
+    subtitle: "Dairy Products Delivery App • Android",
+    accent: "#c70202ff",
+    url: "https://play.google.com/store/apps/details?id=com.dailyexpress.app",
+  },
+  {
+    image: "/projects/pr1.png",
     title: "Quick 3D",
     subtitle: "2D to 3D STL Converter • React & Python",
     accent: "#0284c7",
     url: "https://quick3d.vercel.app/",
   },
   {
-    image: "/pr2.png",
+    image: "/projects/pr2.png",
     title: "Flutter Text Utils",
     subtitle: "Open Source Pub Package • Dart Toolkit",
     accent: "#10b981",
     url: "https://pub.dev/packages/flutter_text_utils",
   },
   {
-    image: "/pr3.png",
+    image: "/projects/pr3.png",
     title: "Savour-AI",
     subtitle: "AI Food Discovery & Reels UI • Flutter",
-    accent: "#f97316",
+    accent: "#f9c016ff",
     url: "https://github.com/Dheeraj-Chintala/Savour-AI",
-  }
+  },
+  {
+    image: "/projects/bookit.png",
+    title: "BookIt",
+    subtitle: "Full stack travel Booking Webapp • React NodeJS",
+    accent: "#de4200ff",
+    url: "https://github.com/Dheeraj-Chintala/BookIt",
+  },
+  {
+    image: "/projects/fitness.png",
+    title: "Fitness App",
+    subtitle: "AI chat with a personalized fitness guide • Flutter OpenRouter",
+    accent: "#f96115ff",
+    url: "https://github.com/Dheeraj-Chintala/FitnessApp",
+  },
+  {
+    image: "/projects/instanews.png",
+    title: "InstaNews",
+    subtitle: "Daily News with Insta Reel UI • Flutter newsAPI",
+    accent: "#1674f9ff",
+    url: "https://github.com/Dheeraj-Chintala/Android-Apps/tree/master/instanews",
+  },
+  {
+    image: "/projects/movies.png",
+    title: "MoviesFusion",
+    subtitle: "explore, search, and stay updated on movies,TV series, • Flutter",
+    accent: "#69f916ff",
+    url: "https://github.com/Dheeraj-Chintala/MoviesFusion",
+  },
 ];
 
 export default function Projects() {
