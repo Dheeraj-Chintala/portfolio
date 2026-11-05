@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import FloatingNav from "./components/FloatingNav";
 import Home from "./components/Home";
-import BubblesBackground from "./components/BubblesBackground";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Experience from "./components/Experience";
@@ -16,26 +15,21 @@ function AppContent() {
 
   return (
     <div
-      className="relative min-h-screen overflow-hidden transition-colors duration-500"
+      className="relative min-h-screen overflow-hidden transition-colors duration-500 selection:bg-black selection:text-white"
       style={{ color: "var(--color-text-primary)" }}
     >
       {/* Minimal Designed Loading Screen with Numbers Counter */}
       <LoadingScreen onComplete={() => setIsLoaded(true)} />
 
-      {/* Background (desktop only to prevent mobile scroll lag & battery drain) */}
-      <div className="hidden md:block absolute inset-0 -z-10">
-        <BubblesBackground />
-      </div>
-
       {/* Floating Nav */}
       <FloatingNav />
 
       {/* Content Sections */}
-      <div className="relative z-10">
+      <div className="relative z-10 selection:bg-black selection:text-white">
         {/* Home */}
         <section
           id="home"
-          className="relative min-h-screen md:h-screen w-full flex items-center justify-center select-none overflow-hidden transition-colors duration-500"
+          className="relative min-h-screen md:h-screen w-full flex items-center justify-center overflow-hidden transition-colors duration-500"
         >
           <Home isLoaded={isLoaded} />
         </section>
@@ -43,7 +37,7 @@ function AppContent() {
         {/* About */}
         <section
           id="about"
-          className="py-24 min-h-screen w-full flex items-center justify-center px-4 select-none transition-colors duration-500"
+          className="py-24 min-h-screen w-full flex items-center justify-center px-4 transition-colors duration-500"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <About />
@@ -52,7 +46,7 @@ function AppContent() {
         {/* Skills */}
         <section
           id="skills"
-          className="py-20 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
+          className="py-20 min-h-screen w-full flex items-center justify-center px-0 transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <Skills />
@@ -61,7 +55,7 @@ function AppContent() {
         {/* Experience & Work */}
         <section
           id="experience"
-          className="py-16 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
+          className="py-16 min-h-screen w-full flex items-center justify-center px-0 transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <Experience />
@@ -70,7 +64,7 @@ function AppContent() {
         {/* Projects */}
         <section
           id="projects"
-          className="py-20 min-h-screen w-full flex items-center justify-center px-0 select-none transition-colors duration-500 overflow-hidden"
+          className="py-20 min-h-screen w-full flex items-center justify-center px-0 transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-projects)" }}
         >
           <Projects />
@@ -79,7 +73,7 @@ function AppContent() {
         {/* Contact */}
         <section
           id="contact"
-          className="w-full flex items-center justify-center select-none transition-colors duration-500 overflow-hidden"
+          className="w-full flex items-center justify-center transition-colors duration-500 overflow-hidden"
           style={{ background: "var(--gradient-section-about)" }}
         >
           <Contact />

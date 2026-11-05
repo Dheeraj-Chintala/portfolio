@@ -184,12 +184,9 @@ export default function Home({ isLoaded = true }) {
           )}
         </motion.div>
 
-        {/* Tier 3: Subheading value proposition */}
+        {/* Tier 3: Subheading value proposition - Animate-in disabled */}
         <div className="max-w-2xl text-center px-2">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 1.75 }}
+          <h2
             className="myfont text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto text-center leading-relaxed font-semibold transition-colors duration-300"
             style={{
               color: "#1e1b4b",
@@ -198,16 +195,11 @@ export default function Home({ isLoaded = true }) {
           >
             Crafting next-generation digital experiences with cutting-edge
             technology and innovative design solutions
-          </motion.h2>
+          </h2>
         </div>
 
-        {/* Tier 4: Call to Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 2.15 }}
-          className="flex flex-wrap justify-center gap-5 mt-4"
-        >
+        {/* Tier 4: Call to Action Buttons - Animate-in disabled */}
+        <div className="flex flex-wrap justify-center gap-5 mt-4">
           <button
             className="cursor-pointer font-bold py-3 px-8 rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
             style={{
@@ -243,7 +235,7 @@ export default function Home({ isLoaded = true }) {
           >
             Download CV
           </button>
-        </motion.div>
+        </div>
 
         {/* Tier 5: Mouse Scroll Indicator */}
         <motion.a

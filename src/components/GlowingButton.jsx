@@ -1,6 +1,3 @@
-import React from "react";
-import { FaGithub} from "react-icons/fa";
-
 const GlowingButton = ({ label, onClick, className = "" }) => {
   return (
     <button

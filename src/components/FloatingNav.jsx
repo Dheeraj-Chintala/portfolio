@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import { createElement, useState, useEffect } from "react";
 import { Home, User, Code2, Briefcase, FileText, Mail } from "lucide-react";
 
 const desktopLinks = [
@@ -20,6 +20,29 @@ const mobileLinks = [
 ];
 
 export default function FloatingNav() {
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+  useEffect(() => {
+    const checkOverlay = () => {
+      const active =
+        document.body.classList.contains("overlay-active") ||
+        document.body.getAttribute("data-overlay-open") === "true";
+      setIsOverlayOpen(active);
+    };
+
+    checkOverlay();
+    const observer = new MutationObserver(checkOverlay);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class", "data-overlay-open"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Do not display navbar when overlay windows are on screen
+  if (isOverlayOpen) return null;
+
   const glassStyle = {
     background: "rgba(255, 255, 255, 0.45)",
     border: "1px solid rgba(255, 255, 255, 0.8)",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoadingScreen({ onComplete }) {
@@ -12,7 +12,7 @@ export default function LoadingScreen({ onComplete }) {
     let current = 0;
     const interval = setInterval(() => {
       // Dynamic non-linear progression
-      const increment = Math.floor(Math.random() * 6) + 2;
+      const increment = Math.floor(Math.random() * 6) + 3;
       current = Math.min(100, current + increment);
       setProgress(current);
 
@@ -22,9 +22,9 @@ export default function LoadingScreen({ onComplete }) {
         setTimeout(() => {
           setIsDone(true);
           document.body.style.overflow = "unset";
-        }, 280);
+        }, 220);
       }
-    }, 28);
+    }, 24);
 
     return () => {
       clearInterval(interval);
@@ -44,59 +44,29 @@ export default function LoadingScreen({ onComplete }) {
           exit={{
             y: "-100%",
             transition: {
-              duration: 0.85,
+              duration: 0.8,
               ease: [0.76, 0, 0.24, 1],
             },
           }}
-          className="fixed inset-0 z-[9999] bg-[#090d14] text-white flex flex-col justify-between p-6 sm:p-10 md:p-14 select-none pointer-events-auto"
+          className="fixed inset-0 z-[9999] bg-[#090d14] text-white flex flex-col items-center justify-center p-6 select-none pointer-events-auto"
         >
-          {/* Top Bar: Minimal Brand & Status */}
-          <div className="w-full flex items-center justify-between text-xs font-mono tracking-widest text-slate-400">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              <span className="text-slate-300 font-medium">DHEERAJ CHINTALA</span>
-            </div>
-            <span className="text-slate-500 hidden sm:inline-block">PORTFOLIO // 2026</span>
-          </div>
-
-          {/* Center / Counter Area: Large Minimal Monospace Numbers */}
-          <div className="w-full flex flex-col sm:flex-row sm:items-end justify-between gap-6 my-auto">
-            {/* Left Context / Micro Status */}
-            <div className="space-y-1 font-mono text-xs text-slate-500 uppercase tracking-widest">
-              <p className="text-slate-400">
-                {progress < 35
-                  ? "SYSTEM_INIT"
-                  : progress < 70
-                    ? "LOADING_COMPONENTS"
-                    : progress < 100
-                      ? "FINALIZING_INTERFACE"
-                      : "READY"}
-              </p>
-              <p className="text-slate-600">SOFTWARE &amp; CREATIVE</p>
-            </div>
-
-            {/* Right: Big Minimalist Numbers */}
+          {/* Minimalist Centered Counter */}
+          <div className="flex flex-col items-center justify-center space-y-4">
             <div className="flex items-baseline">
-              <span className="text-7xl sm:text-9xl md:text-[11rem] font-extralight tracking-tighter tabular-nums font-mono text-white leading-none">
+              <span className="text-6xl sm:text-8xl md:text-9xl font-extralight tracking-tighter tabular-nums font-mono text-white leading-none">
                 {progress < 10 ? `0${progress}` : progress}
               </span>
-              <span className="text-2xl sm:text-4xl font-light font-mono text-slate-500 ml-2">
+              <span className="text-xl sm:text-2xl font-light font-mono text-slate-500 ml-1.5">
                 %
               </span>
             </div>
-          </div>
 
-          {/* Bottom Bar: Hairline 1px Progress Track & Location */}
-          <div className="w-full space-y-3">
-            <div className="w-full h-[1px] bg-slate-800/90 relative overflow-hidden">
+            {/* Hairline 1px Progress Track */}
+            <div className="w-36 sm:w-48 h-[1px] bg-slate-800/90 relative overflow-hidden rounded-full">
               <div
-                className="h-full bg-white transition-all duration-75 ease-out"
+                className="h-full bg-white transition-all duration-75 ease-out rounded-full"
                 style={{ width: `${progress}%` }}
               />
-            </div>
-            <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 tracking-wider">
-              <span>HYDERABAD, INDIA</span>
-              <span>[ 17.3850° N, 78.4867° E ]</span>
             </div>
           </div>
         </motion.div>

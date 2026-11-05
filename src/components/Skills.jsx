@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ImageGrid from "./originkit/ui/image-grid";
 
@@ -42,20 +43,29 @@ const TECH_STACK_IMAGES = [
 ];
 
 export default function Skills() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-6 flex flex-col items-start justify-center relative">
-      {/* Animated Tech Stack Heading - Left Aligned with 60% Opacity, Tucked Under Div */}
-      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 select-none pt-2 relative z-10">
+      {/* Animated Tech Stack Heading - Left Aligned, reduced opacity */}
+      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 pt-2 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 0.6, y: 0 }}
+          whileInView={{ opacity: 0.5, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-slate-900 leading-tight inline-block origin-bottom-left pt-1"
           style={{
             fontFamily: "'Boldonse', system-ui, sans-serif",
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
           }}
         >
           Tech Stack
@@ -100,16 +110,18 @@ export default function Skills() {
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
         className="w-full hidden md:block h-[540px] md:h-[620px] rounded-3xl overflow-hidden border border-slate-200/90 bg-white/70 backdrop-blur-xl shadow-[0_20px_50px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] relative z-20"
       >
-        <ImageGrid
-          images={TECH_STACK_IMAGES}
-          cell={86}
-          cardSize={66}
-          magnify={2.9}
-          radius={250}
-          drain={10}
-          assemble={true}
-          showTooltip={true}
-        />
+        {isDesktop && (
+          <ImageGrid
+            images={TECH_STACK_IMAGES}
+            cell={86}
+            cardSize={66}
+            magnify={2.9}
+            radius={250}
+            drain={10}
+            assemble={true}
+            showTooltip={true}
+          />
+        )}
       </motion.div>
     </div>
   );

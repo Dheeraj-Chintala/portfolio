@@ -56,7 +56,7 @@ const PROJECTS_DATA = [
     image: "/projects/movies.png",
     title: "MoviesFusion",
     subtitle: "explore, search, and stay updated on movies,TV series, • Flutter",
-    accent: "#69f916ff",
+    accent: "#16f9deff",
     url: "https://github.com/Dheeraj-Chintala/MoviesFusion",
   },
 ];
@@ -64,18 +64,16 @@ const PROJECTS_DATA = [
 export default function Projects() {
   return (
     <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 flex flex-col items-start justify-center relative">
-      {/* Featured Projects Heading - Tucked Under Div */}
-      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 select-none pt-2 relative z-10">
+      {/* Featured Projects Heading - reduced opacity */}
+      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 pt-2 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 0.6, y: 0 }}
+          whileInView={{ opacity: 0.5, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-slate-900 leading-tight inline-block origin-bottom-left pt-1"
           style={{
             fontFamily: "'Boldonse', system-ui, sans-serif",
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
           }}
         >
           Featured Projects

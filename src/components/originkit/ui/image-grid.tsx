@@ -1,7 +1,6 @@
 "use client"
 
-import * as React from "react"
-import { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState, type CSSProperties } from "react"
 import * as THREE from "three"
 
 const MAX_CARDS = 420
@@ -634,7 +633,7 @@ export interface ImageGridProps {
     drain?: number
     assemble?: boolean
     showTooltip?: boolean
-    style?: React.CSSProperties
+    style?: CSSProperties
 }
 
 export default function ImageGrid(props: ImageGridProps) {
@@ -654,7 +653,7 @@ export default function ImageGrid(props: ImageGridProps) {
     const sceneRef = useRef<ImageGridScene | null>(null)
     const cfgRef = useRef<Config>(null as any)
     cfgRef.current = { images, cell, cardSize, magnify, radius, drain, assemble }
-    const [tooltip, setTooltip] = React.useState<{ name: string; x: number; y: number } | null>(null)
+    const [tooltip, setTooltip] = useState<{ name: string; x: number; y: number } | null>(null)
 
     useEffect(() => {
         const container = containerRef.current

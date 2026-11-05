@@ -2,9 +2,35 @@
 @source "./components/originkit";
 /* src/App.css */
 
+/* Custom global text selection - solid dark/black selection */
+*::selection,
+::selection {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+*::-moz-selection,
+::-moz-selection {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none; 
 }
-.myfont{
-    font-family: 'LXGW WenKai Mono TC', monospace;
+.myfont {
+  font-family: 'LXGW WenKai Mono TC', monospace;
+}
+.font-cursive {
+  font-family: 'Mea Culpa', cursive;
+}
+
+/* Hide floating nav when any overlay window is on screen */
+body.overlay-active nav,
+body[data-overlay-open="true"] nav {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { GitBranch } from "lucide-react";
+import { GitBranch, X, Terminal, Minus, Square } from "lucide-react";
 
 const MAIN_TRACK = [
   {
@@ -109,9 +109,22 @@ const PARALLEL_BRANCH = {
 
 export default function Experience() {
   const [activeJob, setActiveJob] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
   const timelineRef = useRef(null);
   const [lineHeight, setLineHeight] = useState(0);
+
+  // Responsive screen detection: disable terminal on small devices (< 768px)
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) setActiveJob(null);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const updateHeight = () => {
@@ -132,6 +145,31 @@ export default function Experience() {
   const beamHeight = useTransform(scrollYProgress, [0, 1], [0, lineHeight]);
   const beamOpacity = useTransform(scrollYProgress, [0, 0.05], [0, 1]);
 
+  // Lock background scroll and hide nav when terminal modal is open
+  useEffect(() => {
+    if (activeJob) {
+      const originalOverflow = document.body.style.overflow;
+      const originalPaddingRight = document.body.style.paddingRight;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("overlay-active");
+      document.body.setAttribute("data-overlay-open", "true");
+
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.paddingRight = originalPaddingRight;
+        document.body.classList.remove("overlay-active");
+        document.body.removeAttribute("data-overlay-open");
+      };
+    }
+  }, [activeJob]);
+
+  // Keyboard shortcut (Escape / Q) to close
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape" || e.key === "q" || e.key === "Q") {
@@ -147,20 +185,16 @@ export default function Experience() {
       ref={containerRef}
       className="w-full px-4 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-20 flex flex-col items-start justify-center relative"
     >
-      {/* Work & Experience Section Heading */}
-      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 select-none pt-2 relative z-10">
+      {/* Work & Experience Section Heading - Bottom fade removed, reduced opacity */}
+      <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 pt-2 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 0.6, y: 0 }}
+          whileInView={{ opacity: 0.5, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-slate-900 leading-tight inline-block origin-bottom-left pt-1"
           style={{
             fontFamily: "'Boldonse', system-ui, sans-serif",
-            maskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 90%)",
           }}
         >
           Work &amp; Experience
@@ -186,8 +220,11 @@ export default function Experience() {
           <div className="space-y-16 sm:space-y-24 md:space-y-28">
             {/* Step 01: Android Developer Intern */}
             <div
-              onClick={() => setActiveJob(MAIN_TRACK[0])}
-              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-pointer group"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.innerWidth < 768) return;
+                setActiveJob(MAIN_TRACK[0]);
+              }}
+              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-default md:cursor-pointer group"
             >
               {/* Left Column: Time Only (Thin/Medium Mono, No Badges, No Milestone text) */}
               <div className="hidden sm:block text-right">
@@ -224,8 +261,11 @@ export default function Experience() {
             {/* BRANCH OUT: Video Editor & Graphic Designer (Distinct Parallel Branch Off Main Stepper) */}
             <div className="relative">
               <div
-                onClick={() => setActiveJob(PARALLEL_BRANCH)}
-                className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-pointer group"
+                onClick={() => {
+                  if (typeof window !== "undefined" && window.innerWidth < 768) return;
+                  setActiveJob(PARALLEL_BRANCH);
+                }}
+                className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-default md:cursor-pointer group"
               >
                 {/* Left Column: Empty on desktop (Date moved to right side) */}
                 <div className="hidden sm:block" />
@@ -292,8 +332,11 @@ export default function Experience() {
 
             {/* Step 02: Software Engineering Intern */}
             <div
-              onClick={() => setActiveJob(MAIN_TRACK[1])}
-              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-pointer group"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.innerWidth < 768) return;
+                setActiveJob(MAIN_TRACK[1]);
+              }}
+              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-default md:cursor-pointer group"
             >
               {/* Left Column: Time Only (No Badges, No Milestone text) */}
               <div className="hidden sm:block text-right">
@@ -329,8 +372,11 @@ export default function Experience() {
 
             {/* Step 03: Backend Engineer */}
             <div
-              onClick={() => setActiveJob(MAIN_TRACK[2])}
-              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-pointer group"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.innerWidth < 768) return;
+                setActiveJob(MAIN_TRACK[2]);
+              }}
+              className="relative grid grid-cols-[auto_1fr] sm:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 md:gap-14 py-4 sm:py-6 px-2 sm:px-6 rounded-2xl hover:bg-slate-900/[0.04] transition-all duration-200 cursor-default md:cursor-pointer group"
             >
               {/* Left Column: Time Only (No Badges, No Milestone text) */}
               <div className="hidden sm:block text-right">
@@ -367,97 +413,140 @@ export default function Experience() {
         </div>
       </div>
 
-      {/* Draggable Terminal Style UI Window (Wider, Shorter, Real Window Ratio) */}
+      {/* Windows Terminal Style UI Window (Desktop Only) */}
       <AnimatePresence>
-        {activeJob && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none p-3 sm:p-5 select-none">
+        {!isMobile && activeJob && (
+          <div
+            className="hidden md:flex fixed inset-0 z-[100] items-center justify-center pointer-events-none p-3 sm:p-5 select-none overscroll-contain"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {/* Scrim Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveJob(null)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-xs pointer-events-auto"
+              className="absolute inset-0 bg-black/65 backdrop-blur-xs pointer-events-auto"
             />
 
-            {/* Draggable Terminal Window Container (Wider: max-w-4xl, Shorter: max-h-[50vh]) */}
+            {/* Windows Terminal Window Container */}
             <motion.div
               drag
               dragMomentum={false}
               dragElastic={0.05}
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative w-full max-w-3xl sm:max-w-4xl bg-[#0c1017] text-slate-200 border border-slate-700/90 rounded-xl shadow-[0_30px_90px_rgba(0,0,0,0.85)] overflow-hidden pointer-events-auto z-10 font-mono"
+              className="relative w-full max-w-3xl sm:max-w-4xl bg-[#0c0c0c] text-slate-200 border border-[#333333] rounded-lg shadow-[0_25px_80px_rgba(0,0,0,0.9)] overflow-hidden pointer-events-auto z-10 font-mono"
             >
-              {/* Terminal Titlebar (Drag Handle) - Traffic Lights Only, No Cross / Drag text on top right */}
-              <div className="px-4 py-3 bg-[#161b22] border-b border-slate-800 flex items-center justify-between cursor-grab active:cursor-grabbing select-none">
-                <div className="flex items-center gap-2">
+              {/* Windows Terminal Titlebar with Tab Bar & Window Controls */}
+              <div className="bg-[#1f1f1f] border-b border-[#2d2d2d] flex items-center justify-between select-none cursor-grab active:cursor-grabbing">
+                {/* Left: Windows Terminal Tab */}
+                <div className="flex items-center pt-1.5 px-2">
+                  <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0c0c0c] text-slate-200 text-xs font-mono rounded-t-md border-t-2 border-sky-400 shadow-sm border-x border-[#333333] border-b-0">
+                    <Terminal size={13} className="text-sky-400 shrink-0" />
+                    <span className="font-semibold text-slate-200 truncate max-w-[200px] sm:max-w-none text-xs">
+                      PowerShell • ~/{activeJob.slug}.ps1
+                    </span>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveJob(null);
+                      }}
+                      className="ml-2 hover:bg-white/10 p-0.5 rounded-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                      title="Close Tab"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+
+                  {/* Windows Terminal New Tab (+) Button */}
+                  <div className="hidden sm:flex items-center justify-center w-7 h-7 text-slate-400 hover:bg-white/5 hover:text-white rounded-xs transition-colors ml-1 cursor-default text-sm select-none">
+                    +
+                  </div>
+                </div>
+
+                {/* Right: Windows Standard Window Control Buttons */}
+                <div className="flex items-center h-full">
+                  <button
+                    type="button"
+                    className="w-11 h-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    title="Minimize"
+                  >
+                    <Minus size={13} />
+                  </button>
+                  <button
+                    type="button"
+                    className="w-11 h-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    title="Maximize"
+                  >
+                    <Square size={11} />
+                  </button>
                   <button
                     type="button"
                     onClick={() => setActiveJob(null)}
-                    className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] hover:brightness-125 transition-all cursor-pointer flex items-center justify-center group/btn"
+                    className="w-11 h-9 flex items-center justify-center text-slate-400 hover:text-white hover:bg-[#e81123] transition-colors cursor-pointer"
                     title="Close (Esc)"
                   >
-                    <span className="opacity-0 group-hover/btn:opacity-100 text-[9px] text-black font-bold leading-none">
-                      ×
-                    </span>
+                    <X size={14} />
                   </button>
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e]" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#27c93f]" />
-                  <span className="ml-3 text-xs sm:text-sm text-slate-400 font-mono truncate">
-                    dheeraj@work: ~/{activeJob.slug}.sh
-                  </span>
                 </div>
-
-                {/* Empty clean right corner */}
-                <div className="w-8" />
               </div>
 
-              {/* Terminal Body: Single Column Sequential Execution, Scrollable */}
-              <div className="p-5 sm:p-7 text-xs sm:text-sm font-mono overflow-y-auto max-h-[52vh] space-y-6 [scrollbar-width:thin] [scrollbar-color:#334155_transparent]">
-                {/* Command 1: cat role.env */}
+              {/* Terminal Body: Windows PowerShell Output & Scrolling, with background scroll locked */}
+              <div
+                className="p-5 sm:p-7 text-xs sm:text-sm font-mono overflow-y-auto max-h-[54vh] space-y-6 overscroll-contain [scrollbar-width:thin] [scrollbar-color:#333333_transparent]"
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+              >
+                {/* Windows PowerShell Header Notice */}
+                <div className="text-slate-400 text-xs select-none space-y-0.5 pb-2 border-b border-[#222222]">
+                  <div className="font-semibold text-slate-300">Windows PowerShell</div>
+                  <div className="text-slate-500">Copyright (C) Microsoft Corporation. All rights reserved.</div>
+                </div>
+
+                {/* Command 1: Get-Content .\role.env */}
                 <div className="space-y-2">
-                  <div className="text-slate-400 flex items-center gap-1.5 flex-wrap">
-                    <span className="text-emerald-400 font-bold">dheeraj@portfolio</span>
-                    <span className="text-slate-500">:</span>
-                    <span className="text-slate-300 font-bold">~</span>
-                    <span className="text-slate-400">$ cat role.env</span>
+                  <div className="text-slate-300 flex items-center gap-2 flex-wrap">
+                    <span className="text-yellow-400 font-bold">PS C:\Users\Dheeraj\Experience&gt;</span>
+                    <span className="text-cyan-300 font-medium">Get-Content</span>
+                    <span className="text-slate-200">.\role.env</span>
                   </div>
-                  <div className="pl-3 sm:pl-4 space-y-1 text-slate-300 bg-[#090d13]/90 p-3.5 rounded-lg border border-slate-800/80">
-                    <p>
-                      <span className="text-slate-500">ROLE=</span>
-                      <span className="text-white font-medium">&quot;{activeJob.role}&quot;</span>
-                    </p>
-                    <p>
-                      <span className="text-slate-500">ORG=</span>
+                  <div className="pl-3 sm:pl-4 space-y-1.5 text-slate-300 bg-[#141414] p-3.5 rounded-md border border-[#2b2b2b]">
+                    <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] gap-1 text-xs">
+                      <span className="text-slate-400">ROLE:</span>
+                      <span className="text-white font-semibold">&quot;{activeJob.role}&quot;</span>
+                      <span className="text-slate-400">ORGANIZATION:</span>
                       <span className="text-emerald-400 font-medium">&quot;{activeJob.company}&quot;</span>
-                    </p>
-                    <p>
-                      <span className="text-slate-500">LOCATION=</span>
-                      <span className="text-slate-400">&quot;{activeJob.location}&quot;</span>
-                    </p>
-                    <p>
-                      <span className="text-slate-500">PERIOD=</span>
-                      <span className="text-slate-200">&quot;{activeJob.period}&quot;</span>
-                    </p>
+                      <span className="text-slate-400">LOCATION:</span>
+                      <span className="text-sky-300">&quot;{activeJob.location}&quot;</span>
+                      <span className="text-slate-400">PERIOD:</span>
+                      <span className="text-yellow-200 font-mono">&quot;{activeJob.period}&quot;</span>
+                      {activeJob.type && (
+                        <>
+                          <span className="text-slate-400">HONOR/STATUS:</span>
+                          <span className="text-amber-300 font-semibold">{activeJob.type}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Command 2: cat tech_stack.txt */}
+                {/* Command 2: Get-Content .\tech_stack.txt */}
                 <div className="space-y-2">
-                  <div className="text-slate-400 flex items-center gap-1.5 flex-wrap">
-                    <span className="text-emerald-400 font-bold">dheeraj@portfolio</span>
-                    <span className="text-slate-500">:</span>
-                    <span className="text-slate-300 font-bold">~</span>
-                    <span className="text-slate-400">$ cat tech_stack.txt</span>
+                  <div className="text-slate-300 flex items-center gap-2 flex-wrap">
+                    <span className="text-yellow-400 font-bold">PS C:\Users\Dheeraj\Experience&gt;</span>
+                    <span className="text-cyan-300 font-medium">Get-Content</span>
+                    <span className="text-slate-200">.\tech_stack.txt</span>
                   </div>
                   <div className="pl-3 sm:pl-4 flex flex-wrap gap-2 pt-1">
                     {activeJob.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-2.5 py-1 rounded bg-slate-800/90 text-slate-300 text-xs border border-slate-700/80 font-mono"
+                        className="px-2.5 py-1 rounded-sm bg-[#1c1c1c] text-sky-200 text-xs border border-[#383838] font-mono shadow-2xs"
                       >
                         {skill}
                       </span>
@@ -465,13 +554,11 @@ export default function Experience() {
                   </div>
                 </div>
 
-                {/* Command 3: cat deliverables.log */}
+                {/* Command 3: .\show-deliverables.ps1 */}
                 <div className="space-y-2">
-                  <div className="text-slate-400 flex items-center gap-1.5 flex-wrap">
-                    <span className="text-emerald-400 font-bold">dheeraj@portfolio</span>
-                    <span className="text-slate-500">:</span>
-                    <span className="text-slate-300 font-bold">~</span>
-                    <span className="text-slate-400">$ cat deliverables.log</span>
+                  <div className="text-slate-300 flex items-center gap-2 flex-wrap">
+                    <span className="text-yellow-400 font-bold">PS C:\Users\Dheeraj\Experience&gt;</span>
+                    <span className="text-cyan-300 font-medium">.\show-deliverables.ps1</span>
                   </div>
                   <ul className="pl-3 sm:pl-4 space-y-2.5 text-slate-300 text-xs sm:text-sm">
                     {activeJob.highlights.map((point, i) => (
@@ -485,12 +572,10 @@ export default function Experience() {
                   </ul>
                 </div>
 
-                {/* Active Prompt with Blinking Cursor */}
-                <div className="pt-2 text-slate-400 flex items-center gap-1.5 border-t border-slate-800/70">
-                  <span className="text-emerald-400 font-bold">dheeraj@portfolio</span>
-                  <span className="text-slate-500">:</span>
-                  <span className="text-slate-300">$</span>
-                  <span className="w-2 h-4 bg-emerald-400 inline-block animate-pulse" />
+                {/* Active PowerShell Prompt with Blinking Block Cursor */}
+                <div className="pt-3 text-slate-300 flex items-center gap-2 border-t border-[#222222]">
+                  <span className="text-yellow-400 font-bold">PS C:\Users\Dheeraj\Experience&gt;</span>
+                  <span className="w-2.5 h-4 bg-slate-200 inline-block animate-pulse" />
                 </div>
               </div>
             </motion.div>

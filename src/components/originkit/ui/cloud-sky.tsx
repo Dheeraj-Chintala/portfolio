@@ -1,7 +1,6 @@
 "use client"
 
-import * as React from "react"
-import { useEffect, useRef } from "react"
+import React, { useEffect, useRef, type CSSProperties } from "react"
 
 const MAX_DPR = 2
 
@@ -228,7 +227,7 @@ const POINTER_DEFAULTS: Required<Pointer> = { parallax: 100, wind: 100, damping:
 
 interface Props {
     className?: string
-    style?: React.CSSProperties
+    style?: CSSProperties
     width?: number
     height?: number
     background?: string
@@ -326,6 +325,7 @@ export default function CloudSky(props: Props) {
 
         let raf = 0
         let last = performance.now()
+        let isVisible = true
 
         let nearX = 0
         let farX = 0
@@ -333,7 +333,25 @@ export default function CloudSky(props: Props) {
         let leanX = 0
         let leanY = 0
 
+        const startLoop = () => {
+            if (!raf && isVisible) {
+                last = performance.now()
+                raf = requestAnimationFrame(render)
+            }
+        }
+
+        const stopLoop = () => {
+            if (raf) {
+                cancelAnimationFrame(raf)
+                raf = 0
+            }
+        }
+
         const render = (now: number) => {
+            if (!isVisible) {
+                raf = 0
+                return
+            }
             const dt = Math.min(0.05, (now - last) / 1000)
             last = now
             const v = vRef.current
@@ -388,6 +406,7 @@ export default function CloudSky(props: Props) {
         }
 
         const trackWindow = (e: PointerEvent) => {
+            if (!isVisible) return
             const r = canvas.getBoundingClientRect()
             if (r.width <= 0 || r.height <= 0) return
             if (
@@ -407,13 +426,28 @@ export default function CloudSky(props: Props) {
             ptrRef.current.inside = false
         }
 
+        // Performance Optimization: IntersectionObserver pauses rendering when scrolled offscreen
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting
+                if (isVisible) {
+                    startLoop()
+                } else {
+                    stopLoop()
+                }
+            },
+            { threshold: 0 }
+        )
+        observer.observe(canvas)
+
         window.addEventListener("pointermove", trackWindow)
         canvas.addEventListener("pointerleave", onLeave)
 
-        raf = requestAnimationFrame(render)
+        startLoop()
 
         return () => {
-            cancelAnimationFrame(raf)
+            stopLoop()
+            observer.disconnect()
             window.removeEventListener("pointermove", trackWindow)
             canvas.removeEventListener("pointerleave", onLeave)
         }
