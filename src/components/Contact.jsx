@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { Mail, Copy, Check, Send, ArrowUpRight } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
+import useIsMobile from "../hooks/useIsMobile";
 
 export default function Contact() {
+  const isMobile = useIsMobile();
   const [copied, setCopied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ state: "idle", message: "" });
@@ -101,10 +103,11 @@ export default function Contact() {
       {/* Section Header: "Let's build something new." with Mea Culpa Cursive Font & Animate In */}
       <div className="w-full text-left pt-2 pb-3 sm:pb-5 relative z-10 overflow-visible">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 0.5, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial={isMobile ? false : { opacity: 0, y: 20 }}
+          whileInView={isMobile ? undefined : { opacity: 0.5, y: 0 }}
+          animate={isMobile ? { opacity: 0.5, y: 0 } : undefined}
+          viewport={isMobile ? undefined : { once: true }}
+          transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
           className="font-cursive text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal text-slate-900 tracking-wide leading-tight inline-block origin-bottom-left"
           style={{
             fontFamily: "'Mea Culpa', cursive",
@@ -116,10 +119,11 @@ export default function Contact() {
 
       {/* Ultra-Premium Minimalist Glass Canvas */}
       <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={isMobile ? false : { opacity: 0, y: 28 }}
+        whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+        animate={isMobile ? { opacity: 1, y: 0 } : undefined}
+        viewport={isMobile ? undefined : { once: true, amount: 0.15 }}
+        transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="w-full rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-white/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] p-4 sm:p-8 md:p-14 relative z-20 overflow-hidden"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-stretch">

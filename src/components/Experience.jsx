@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { GitBranch, X, Terminal, Minus, Square } from "lucide-react";
+import useIsMobile from "../hooks/useIsMobile";
 
 const MAIN_TRACK = [
   {
@@ -108,23 +109,16 @@ const PARALLEL_BRANCH = {
 };
 
 export default function Experience() {
+  const isMobile = useIsMobile();
   const [activeJob, setActiveJob] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
   const timelineRef = useRef(null);
   const [lineHeight, setLineHeight] = useState(0);
 
-  // Responsive screen detection: disable terminal on small devices (< 768px)
+  // Responsive screen detection: close active modal on small devices (< 768px)
   useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (mobile) setActiveJob(null);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    if (isMobile) setActiveJob(null);
+  }, [isMobile]);
 
   useEffect(() => {
     const updateHeight = () => {
@@ -185,13 +179,14 @@ export default function Experience() {
       ref={containerRef}
       className="w-full px-4 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-20 flex flex-col items-start justify-center relative"
     >
-      {/* Work & Experience Section Heading - Bottom fade removed, reduced opacity */}
+      {/* Work & Experience Section Heading - Bottom fade removed, reduced opacity on desktop, static on small devices */}
       <div className="w-full text-left -mb-1 sm:-mb-1.5 md:-mb-2 pt-2 relative z-10">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 0.5, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          initial={isMobile ? false : { opacity: 0, y: 24 }}
+          whileInView={isMobile ? undefined : { opacity: 0.5, y: 0 }}
+          animate={isMobile ? { opacity: 0.5, y: 0 } : undefined}
+          viewport={isMobile ? undefined : { once: true, amount: 0.3 }}
+          transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-slate-900 leading-tight inline-block origin-bottom-left pt-1"
           style={{
             fontFamily: "'Boldonse', system-ui, sans-serif",

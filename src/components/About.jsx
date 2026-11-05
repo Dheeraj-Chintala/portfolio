@@ -264,7 +264,7 @@ export default function About() {
   const [activeWindows, setActiveWindows] = useState([]);
   const [windowOrder, setWindowOrder] = useState([]);
   const [windowPositions, setWindowPositions] = useState({});
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
 
   // Responsive screen detection: disable windows display on small devices (< 768px)
   useEffect(() => {
@@ -384,12 +384,13 @@ export default function About() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 relative flex flex-col items-center justify-center py-8">
-      {/* "ABOUT ME" watermark behind cards: smooth fade in */}
+      {/* "ABOUT ME" watermark behind cards: smooth fade in on desktop, static on small devices */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 0.5, y: 0 }}
-        viewport={{ once: false, amount: 0.15 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        initial={isMobile ? false : { opacity: 0, y: 20 }}
+        whileInView={isMobile ? undefined : { opacity: 0.5, y: 0 }}
+        animate={isMobile ? { opacity: 0.5, y: 0 } : undefined}
+        viewport={isMobile ? undefined : { once: false, amount: 0.15 }}
+        transition={isMobile ? { duration: 0 } : { duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="absolute -top-4 sm:-top-5 md:-top-6 lg:-top-6 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full flex justify-center pt-2"
         style={{
           maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 88%)",
@@ -408,10 +409,10 @@ export default function About() {
 
       {/* Four Cards in a 4-Column Layout */}
       <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.18 }}
+        variants={isMobile ? undefined : containerVariants}
+        initial={isMobile ? false : "hidden"}
+        whileInView={isMobile ? undefined : "visible"}
+        viewport={isMobile ? undefined : { once: true, amount: 0.18 }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full relative z-10 pt-14 md:pt-20"
       >
         {roles.map((role) => {
@@ -419,7 +420,9 @@ export default function About() {
           return (
             <motion.div
               key={role.title}
-              variants={cardVariants}
+              variants={isMobile ? undefined : cardVariants}
+              initial={isMobile ? false : undefined}
+              animate={isMobile ? { opacity: 1, y: 0 } : undefined}
               className="w-full flex justify-center"
               onMouseEnter={() => handleRoleHover(role.num)}
             >
