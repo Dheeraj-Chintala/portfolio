@@ -124,6 +124,81 @@ const falloffStops = (softness: number) => {
   return stops.join(', ');
 };
 
+function ChromaCardMedia({
+  item,
+  isSmallScreen,
+  spotlight,
+  fadeClass,
+  colorStyle,
+}: {
+  item: ChromaItem;
+  isSmallScreen: boolean;
+  spotlight: boolean;
+  fadeClass: string;
+  colorStyle: CSSProperties;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current?.naturalWidth !== 0) {
+      setLoaded(true);
+    }
+  }, [item.image]);
+
+  return (
+    <div
+      data-chroma-area=""
+      className="relative z-[1] overflow-hidden"
+      style={{
+        aspectRatio: 'var(--chroma-ratio)',
+        borderRadius: 'max(0px, calc(var(--chroma-radius) - 8px))',
+        background: 'var(--chroma-well)'
+      }}
+    >
+      {/* Shimmer skeleton while project image loads */}
+      <div
+        className={`absolute inset-0 z-0 bg-slate-200/90 transition-opacity duration-500 ease-out overflow-hidden ${
+          loaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
+        <div className="image-shimmer" />
+      </div>
+
+      <img
+        ref={imgRef}
+        className={`${IMAGE_CLASS} max-md:!filter-none transition-all duration-500 ease-out ${
+          loaded ? 'opacity-100 scale-100 filter-none' : 'opacity-0 scale-[1.02] filter blur-[2px]'
+        }`}
+        style={{
+          filter: isSmallScreen
+            ? 'none'
+            : 'grayscale(var(--chroma-gray)) brightness(calc(1 - var(--chroma-dim)))'
+        }}
+        src={item.image}
+        alt={item.alt ?? item.title ?? ''}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+      />
+      <img
+        className={`${IMAGE_CLASS} ${isSmallScreen ? 'hidden' : ''} ${
+          spotlight ? '' : `${fadeClass} group-hover:opacity-100`
+        } transition-opacity duration-500 ease-out ${loaded ? '' : 'opacity-0'}`}
+        style={colorStyle}
+        src={item.image}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-[inherit]"
+        style={{ boxShadow: 'inset 0 0 0 1px var(--chroma-media-edge)' }}
+      />
+    </div>
+  );
+}
+
 export const ChromaGrid = ({
   items,
   columns = 3,
@@ -323,36 +398,13 @@ export const ChromaGrid = ({
                 className={`pointer-events-none absolute inset-0 z-0 ${spotlight ? '' : `${fadeClass} group-hover:opacity-[calc(var(--chroma-glow)*0.45)]`}`}
                 style={washStyle}
               />
-              <div
-                data-chroma-area=""
-                className="relative z-[1] overflow-hidden"
-                style={{
-                  aspectRatio: 'var(--chroma-ratio)',
-                  borderRadius: 'max(0px, calc(var(--chroma-radius) - 8px))',
-                  background: 'var(--chroma-well)'
-                }}
-              >
-                <img
-                  className={`${IMAGE_CLASS} max-md:!filter-none`}
-                  style={{ filter: isSmallScreen ? 'none' : 'grayscale(var(--chroma-gray)) brightness(calc(1 - var(--chroma-dim)))' }}
-                  src={item.image}
-                  alt={item.alt ?? item.title ?? ''}
-                  loading="lazy"
-                />
-                <img
-                  className={`${IMAGE_CLASS} ${isSmallScreen ? 'hidden' : ''} ${spotlight ? '' : `${fadeClass} group-hover:opacity-100`}`}
-                  style={colorStyle}
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
-                />
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 rounded-[inherit]"
-                  style={{ boxShadow: 'inset 0 0 0 1px var(--chroma-media-edge)' }}
-                />
-              </div>
+              <ChromaCardMedia
+                item={item}
+                isSmallScreen={isSmallScreen}
+                spotlight={spotlight}
+                fadeClass={fadeClass}
+                colorStyle={colorStyle}
+              />
               {showInfo && (item.title || item.subtitle) && (
                 <div className="relative z-[1] flex min-w-0 flex-col gap-1 px-2 pt-1.5 pb-2">
                   {item.title && (

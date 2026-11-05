@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, type CSSProperties } from "react"
+import { useEffect, useRef } from "react"
 
 const MAX_DPR = 2
 
@@ -227,7 +227,7 @@ const POINTER_DEFAULTS: Required<Pointer> = { parallax: 100, wind: 100, damping:
 
 interface Props {
     className?: string
-    style?: CSSProperties
+    style?: React.CSSProperties
     width?: number
     height?: number
     background?: string

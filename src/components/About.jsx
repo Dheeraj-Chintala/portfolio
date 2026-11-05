@@ -12,6 +12,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import TiltedCard, { TiltedCardLayer } from "./TiltedCard";
+import ProgressiveImage from "./common/ProgressiveImage";
 
 /**
  * DYNAMIC ROLE OVERLAY DATA
@@ -277,6 +278,31 @@ export default function About() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Background preloading for window images during idle periods
+  useEffect(() => {
+    const idleTimer = setTimeout(() => {
+      Object.values(ROLE_WINDOWS_DATA).forEach((wins) => {
+        wins.forEach((win) => {
+          if (win.image) {
+            const img = new Image();
+            img.src = win.image;
+          }
+        });
+      });
+    }, 1800);
+    return () => clearTimeout(idleTimer);
+  }, []);
+
+  const handleRoleHover = (roleNum) => {
+    const wins = ROLE_WINDOWS_DATA[roleNum] || [];
+    wins.forEach((w) => {
+      if (w.image) {
+        const img = new Image();
+        img.src = w.image;
+      }
+    });
+  };
+
   // Initialize windows and calculate wide scattered positions when a role card is clicked
   useEffect(() => {
     if (selectedRole) {
@@ -395,6 +421,7 @@ export default function About() {
               key={role.title}
               variants={cardVariants}
               className="w-full flex justify-center"
+              onMouseEnter={() => handleRoleHover(role.num)}
             >
               <TiltedCard
                 containerWidth="100%"
@@ -604,13 +631,14 @@ export default function About() {
                       </div>
                     </div>
 
-                    {/* Window Body: High-Res Image with Clean Light Frame */}
+                    {/* Window Body: High-Res Image with Progressive Shimmer & Smooth Fade */}
                     <div className="relative w-full h-[260px] sm:h-[300px] md:h-[330px] lg:h-[350px] bg-slate-100 overflow-hidden">
-                      <img
+                      <ProgressiveImage
                         src={win.image}
                         alt={win.headline}
+                        containerClassName="w-full h-full"
                         className="w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.01] transition-transform duration-700 ease-out"
-                        loading="lazy"
+                        loading="eager"
                       />
 
                       {/* Windows 11 Light Acrylic Bottom Bar: Headline, Description & Navigable Link */}

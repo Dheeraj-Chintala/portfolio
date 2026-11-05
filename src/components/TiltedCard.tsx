@@ -578,6 +578,15 @@ const TiltedCard = ({
   const glareRgb = (parseColor(glareColor) || [255, 255, 255]).join(', ');
   const bleed = Math.ceil(Math.sin((clamp(rotateAmplitude, 0, 60) * Math.PI) / 180) * 24 * Math.max(0, parallax)) + 1;
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current?.naturalWidth !== 0) {
+      setImgLoaded(true);
+    }
+  }, [imageSrc]);
+
   return (
     <figure
       ref={figureRef}
@@ -616,12 +625,25 @@ const TiltedCard = ({
         }
       >
         <div className="tilted-card__face tilted-card__front absolute inset-0 isolate overflow-hidden rounded-[var(--tc-radius)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
+          {/* Shimmer skeleton while card background image is loading */}
+          <div
+            className={`absolute inset-0 z-0 bg-slate-900 transition-opacity duration-600 ease-out overflow-hidden ${
+              imgLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
+          >
+            <div className="image-shimmer !bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.08)_50%,transparent_100%)]" />
+          </div>
+
           {imageSrc && (
             <img
-              className="pointer-events-none absolute block max-w-none object-cover"
+              ref={imgRef}
+              className={`pointer-events-none absolute block max-w-none object-cover transition-opacity duration-700 ease-out ${
+                imgLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
               src={imageSrc}
               alt={altText}
               draggable={false}
+              onLoad={() => setImgLoaded(true)}
               style={
                 {
                   '--tc-depth': -26 * Math.max(0.5, settingsRef.current.parallax),

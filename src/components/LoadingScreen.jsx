@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const CRITICAL_IMAGES = [
+  "/bloub-capsule-excite-encre.gif",
+  "/abstract-android.jpg",
+  "/abstract-web.jpg",
+  "/abstract-video.jpg",
+  "/abstract-design.jpg",
+  "/projects/dailyex.jpg",
+  "/projects/pr1.png",
+  "/projects/pr2.png",
+  "/projects/pr3.png",
+  "/projects/bookit.png",
+  "/spiderman-poster.jpg",
+];
+
 export default function LoadingScreen({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [isDone, setIsDone] = useState(false);
@@ -9,15 +23,40 @@ export default function LoadingScreen({ onComplete }) {
     // Prevent scrolling while loading
     document.body.style.overflow = "hidden";
 
+    let loadedCount = 0;
+    const total = CRITICAL_IMAGES.length;
+    let targetProgress = 15; // Start with initial aesthetic tick
+
+    // Preload critical above-the-fold & first-interaction assets in parallel
+    CRITICAL_IMAGES.forEach((src) => {
+      const img = new Image();
+      const onDone = () => {
+        loadedCount++;
+        // Target progress based on actual asset arrival (15% to 100%)
+        targetProgress = Math.max(targetProgress, Math.round(15 + (loadedCount / total) * 85));
+      };
+      img.onload = onDone;
+      img.onerror = onDone;
+      img.src = src;
+    });
+
+    // Safety fallback: ensure loading curtain never hangs on sluggish networks
+    const forceTimer = setTimeout(() => {
+      targetProgress = 100;
+    }, 2200);
+
     let current = 0;
     const interval = setInterval(() => {
-      // Dynamic non-linear progression
-      const increment = Math.floor(Math.random() * 6) + 3;
-      current = Math.min(100, current + increment);
-      setProgress(current);
+      if (current < targetProgress) {
+        // Smooth non-linear catchup
+        const step = Math.max(1, Math.ceil((targetProgress - current) / 6));
+        current = Math.min(100, current + step);
+        setProgress(current);
+      }
 
       if (current >= 100) {
         clearInterval(interval);
+        clearTimeout(forceTimer);
         // Brief pause at 100% before smooth curtain lift
         setTimeout(() => {
           setIsDone(true);
@@ -28,6 +67,7 @@ export default function LoadingScreen({ onComplete }) {
 
     return () => {
       clearInterval(interval);
+      clearTimeout(forceTimer);
       document.body.style.overflow = "unset";
     };
   }, []);

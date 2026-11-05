@@ -277,6 +277,8 @@ class ImageGridScene {
         el.style.width = "100%"
         el.style.height = "100%"
         el.style.touchAction = "none"
+        el.style.opacity = "0"
+        el.style.transition = "opacity 0.6s ease-out"
         container.appendChild(el)
 
         this.camera.position.z = 5
@@ -342,13 +344,26 @@ class ImageGridScene {
         const sources = sourcesOf(this.cfg)
         this.sources = sources
         this.textures = sources.map(() => null)
+        let loadedCount = 0
+        const total = sources.length
         sources.forEach((src, i) => {
             loadTexture(src).then((tex) => {
                 if (this.disposed || this.sources[i] !== src) return
                 this.textures[i] = tex
                 this.applyTexture(i)
+                loadedCount++
+                if (loadedCount >= Math.min(3, total)) {
+                    if (this.renderer?.domElement) {
+                        this.renderer.domElement.style.opacity = "1"
+                    }
+                }
             })
         })
+        setTimeout(() => {
+            if (!this.disposed && this.renderer?.domElement) {
+                this.renderer.domElement.style.opacity = "1"
+            }
+        }, 500)
     }
 
     private applyTexture(slot: number) {

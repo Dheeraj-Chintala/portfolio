@@ -1,6 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ImageGrid from "./originkit/ui/image-grid";
+
+function TechIcon({ src, name }) {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current?.naturalWidth !== 0) {
+      setLoaded(true);
+    }
+  }, [src]);
+
+  return (
+    <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs relative overflow-hidden">
+      {!loaded && <div className="absolute inset-0 bg-slate-100 animate-pulse" />}
+      <img
+        ref={imgRef}
+        src={src}
+        alt={name}
+        className={`w-full h-full object-contain transition-opacity duration-300 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  );
+}
 
 const TECH_STACK_IMAGES = [
   // Mobile & Core
@@ -86,14 +113,7 @@ export default function Skills() {
               key={tech.name}
               className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-2xl bg-slate-50/90 border border-slate-200/70 shadow-2xs transition-all active:scale-95"
             >
-              <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
-                <img
-                  src={tech.src}
-                  alt={tech.name}
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                />
-              </div>
+              <TechIcon src={tech.src} name={tech.name} />
               <span className="text-xs font-bold text-slate-800 truncate">
                 {tech.name}
               </span>
