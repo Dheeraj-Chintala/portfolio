@@ -4,6 +4,7 @@ import { Mail, Copy, Check, Send, ArrowUpRight } from "lucide-react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import useIsMobile from "../hooks/useIsMobile";
+import ProgressiveImage from "./common/ProgressiveImage";
 
 export default function Contact() {
   const isMobile = useIsMobile();
@@ -126,9 +127,9 @@ export default function Contact() {
         transition={isMobile ? { duration: 0 } : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="w-full rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-white/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] p-4 sm:p-8 md:p-14 relative z-20 overflow-hidden"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-stretch">
-          {/* Left Column: Details + Spiderman Banner aligned with form base */}
-          <div className="lg:col-span-6 flex flex-col h-full min-h-0 gap-3.5 sm:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-start">
+          {/* Left Column: Details + Spiderman Banner */}
+          <div className="lg:col-span-6 flex flex-col gap-3.5 sm:gap-4">
             <div>
               {/* Thin Font Statement: Available for Projects & Roles */}
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-light text-slate-900 tracking-tight leading-snug">
@@ -199,24 +200,21 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Spiderman Creative Video Banner - Decoupled from intrinsic aspect ratio to align flush with form base */}
-            <div className="relative w-full h-28 sm:h-36 lg:h-auto lg:flex-1 min-h-0 rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs bg-black">
-              <video
-                src="/spiderman.mp4"
-                poster="/spiderman-poster.jpg"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+            {/* Spiderman Creative Banner - Reverted back from flex stretch and increased height */}
+            <div className="w-full h-48 sm:h-56 md:h-60 lg:h-64 rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs relative bg-slate-900">
+              <ProgressiveImage
+                src="/spiderman-poster.jpg"
+                alt="Spider-Man Creative Banner"
+                containerClassName="w-full h-full"
+                className="w-full h-full object-cover select-none pointer-events-none"
+                loading="eager"
               />
             </div>
           </div>
 
           {/* Right Column: Ultra-Clean Minimal Form (Compact natural height) */}
-          <div className="lg:col-span-6 w-full flex flex-col h-full">
-            <div className="h-full p-0 sm:p-6 md:p-7 sm:rounded-2xl sm:bg-white sm:border sm:border-slate-200/90 sm:shadow-sm">
+          <div className="lg:col-span-6 w-full">
+            <div className="p-0 sm:p-6 md:p-7 sm:rounded-2xl sm:bg-white sm:border sm:border-slate-200/90 sm:shadow-sm">
               <h4 className="text-base sm:text-xl font-light text-slate-900 mb-3 sm:mb-5 tracking-tight">
                 Drop a line
               </h4>

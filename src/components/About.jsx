@@ -97,7 +97,7 @@ export const ROLE_WINDOWS_DATA = {
       headline: "Navogiz - Web Platform",
       description: "Frontend Development, Backend Integration, Responsive UI",
       image: "/windows/fullstackrole/navogiz.png",
-      link: "navogiz.com",
+      link: "https://navogiz.com",
       linkText: "View Site",
     },
   ],
@@ -585,14 +585,14 @@ export default function About() {
                       zIndex: isTop ? 50 : zIndex,
                     }}
                     onPointerDown={() => bringToFront(win.id)}
-                    className={`absolute w-[88vw] sm:w-[440px] md:w-[475px] lg:w-[510px] rounded-xl bg-white border ${
+                    className={`absolute w-[90vw] sm:w-[450px] md:w-[480px] lg:w-[510px] rounded-xl bg-white border ${
                       isTop
-                        ? "border-slate-300 shadow-[0_25px_70px_rgba(0,0,0,0.18),0_4px_16px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.04)]"
-                        : "border-slate-200 shadow-[0_12px_36px_rgba(0,0,0,0.11),0_0_0_1px_rgba(0,0,0,0.03)] opacity-[0.98]"
-                    } overflow-hidden pointer-events-auto transition-shadow duration-200 group`}
+                        ? "border-slate-300 shadow-[0_25px_70px_rgba(0,0,0,0.2),0_4px_16px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.04)]"
+                        : "border-slate-200 shadow-[0_12px_36px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.03)] opacity-[0.98]"
+                    } overflow-hidden pointer-events-auto transition-shadow duration-200 group flex flex-col`}
                   >
                     {/* Windows 11 Light Titlebar with Highlighted Color Controls */}
-                    <div className="h-10 px-3.5 bg-[#f4f4f5] border-b border-slate-200/90 flex items-center justify-between select-none cursor-grab active:cursor-grabbing">
+                    <div className="h-10 px-3.5 bg-[#f4f4f5] border-b border-slate-200/90 flex items-center justify-between select-none cursor-grab active:cursor-grabbing shrink-0">
                       <div className="flex items-center gap-2 min-w-0 pr-2">
                         <ImageIcon size={14} className="text-slate-800 shrink-0" />
                         <span className={`text-xs font-semibold tracking-tight truncate ${isTop ? "text-slate-900" : "text-slate-600"}`}>
@@ -604,6 +604,7 @@ export default function About() {
                       <div className="flex items-center h-full -mr-3.5">
                         <button
                           type="button"
+                          onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
                             closeWindow(win.id);
@@ -615,13 +616,15 @@ export default function About() {
                         </button>
                         <button
                           type="button"
-                          className="w-11 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-black/[0.06] active:bg-black/[0.04] transition-colors"
+                          onPointerDown={(e) => e.stopPropagation()}
+                          className="w-11 h-full flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-black/[0.04] transition-colors cursor-default"
                           title="Maximize"
                         >
                           <Square size={11} strokeWidth={2} />
                         </button>
                         <button
                           type="button"
+                          onPointerDown={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
                             closeWindow(win.id);
@@ -634,33 +637,45 @@ export default function About() {
                       </div>
                     </div>
 
-                    {/* Window Body: High-Res Image with Progressive Shimmer & Smooth Fade */}
-                    <div className="relative w-full h-[260px] sm:h-[300px] md:h-[330px] lg:h-[350px] bg-slate-100 overflow-hidden">
+                    {/* Window Image Preview Area */}
+                    <div className="relative w-full h-[190px] sm:h-[215px] md:h-[235px] bg-slate-900/5 overflow-hidden border-b border-slate-200/80 shrink-0">
                       <ProgressiveImage
                         src={win.image}
                         alt={win.headline}
                         containerClassName="w-full h-full"
-                        className="w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.01] transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover object-top select-none pointer-events-none group-hover:scale-[1.015] transition-transform duration-500 ease-out"
                         loading="eager"
                       />
+                    </div>
 
-                      {/* Windows 11 Light Acrylic Bottom Bar: Headline, Description & Navigable Link */}
-                      <div className="absolute inset-x-0 bottom-0 py-3 px-3.5 sm:px-4 bg-white/95 backdrop-blur-md border-t border-slate-200/90 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2.5 pointer-events-auto">
-                        <div className="min-w-0 pr-2">
-                          <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight truncate">
+                    {/* Window Details & Actions: Dedicated Section Below Image (Never Obscured) */}
+                    <div className="p-3.5 sm:p-4 bg-white flex flex-col gap-2.5">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-sm sm:text-[15px] font-bold text-slate-900 tracking-tight leading-snug">
                             {win.headline}
                           </h4>
-                          <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">
-                            {win.description}
-                          </p>
+                          {win.description && (
+                            <div className="flex flex-wrap gap-1.5 mt-2">
+                              {win.description.split(",").map((tech, i) => (
+                                <span
+                                  key={i}
+                                  className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200/80 shadow-2xs"
+                                >
+                                  {tech.trim()}
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
                         {win.link && (
                           <a
-                            href={win.link}
+                            href={win.link.startsWith("http://") || win.link.startsWith("https://") ? win.link : `https://${win.link}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer"
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <span>{win.linkText || "Visit"}</span>
